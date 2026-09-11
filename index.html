@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stanford Hotels Corporation — AI Marketing & Revenue Strategy</title>
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: #131b2e;
+      --card-border: #23314d;
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --accent: #10b981;
+      --gold: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --code-bg: #090d16;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    header {
+      padding: 18px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(11, 15, 25, 0.95);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .brand-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .slide-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--card-border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .dot.active {
+      background: var(--primary);
+      width: 24px;
+      border-radius: 5px;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1240px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      animation: fadeIn 0.35s ease-in-out;
+    }
+    .slide.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-header {
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .slide-num {
+      color: var(--primary-hover);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .slide-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .slide-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    .card {
+      background: #0d1424;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .card-header {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p, .card li {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .card ul {
+      list-style-position: inside;
+      margin-top: 8px;
+    }
+    .card li {
+      margin-bottom: 6px;
+    }
+    .highlight-pill {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary-hover);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .gold-pill {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--gold);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .danger-pill {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .success-pill {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Diagram Styles */
+    .flow-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 16px;
+      background: #090d16;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+    }
+    .flow-node {
+      flex: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .flow-node-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .flow-node-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .flow-arrow {
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    /* Code Snippet Styles */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #e2e8f0;
+      max-height: 380px;
+    }
+    .json-key { color: #60a5fa; }
+    .json-str { color: #34d399; }
+    .json-num { color: #f59e0b; }
+    .json-bool { color: #f43f5e; }
+
+    /* Audit Table */
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .audit-table th, .audit-table td {
+      border: 1px solid var(--card-border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .audit-table th {
+      background: #090d16;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    .audit-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--card-border);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-badge">SHC STRATEGY</div>
+      <div>
+        <div class="brand-title">Stanford Hotels Corporation · AI & Revenue Optimization</div>
+        <div class="brand-subtitle">Candidate: David Kellam · Prepared for Shane Keener (VP Marketing)</div>
+      </div>
+    </div>
+    <div class="slide-controls">
+      <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+      <div class="dots">
+        <div class="dot active" onclick="goToSlide(0)"></div>
+        <div class="dot" onclick="goToSlide(1)"></div>
+        <div class="dot" onclick="goToSlide(2)"></div>
+      </div>
+      <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- SLIDE 1: DATA UNIFICATION -->
+    <div class="slide active" id="slide-0">
+      <div class="slide-header">
+        <div>
+          <div class="slide-num">Strategic Pillar 1 · Foundation</div>
+          <h1 class="slide-title">Data Unification & The "Company Brain"</h1>
+          <p class="slide-subtitle">Harmonizing fragmented hospitality systems into an agent-legible data layer on Microsoft Azure</p>
+        </div>
+        <span class="highlight-pill">Azure & M365 Footprint</span>
+      </div>
+
+      <div class="flow-container">
+        <div class="flow-node">
+          <div class="flow-node-title">Fragmented Silos</div>
+          <div class="flow-node-desc">PMS (Opera/OnQ) · POS (Toast/Micros) · Revinate CRM · GA4 · SOPs</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-node" style="border-color: var(--primary);">
+          <div class="flow-node-title" style="color: var(--primary-hover);">Ingestion & Governance</div>
+          <div class="flow-node-desc">Standards-based APIs · PII Redaction · RBAC · Azure Blob / SQL</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-node" style="border-color: var(--accent);">
+          <div class="flow-node-title" style="color: var(--accent);">Agentic Execution Layer</div>
+          <div class="flow-node-desc">Pacing alerts · GEO schema generator · Review sentiment clustering</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-node">
+          <div class="flow-node-title">Human-in-the-Loop</div>
+          <div class="flow-node-desc">Shane & Property GMs approve rate shifts, campaigns & budgets</div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="card">
+          <div class="card-header">
+            <span>🏢</span> The Reality of Hotel Data
+          </div>
+          <p>Hotel data is notoriously trapped across 10+ disconnected SaaS vendor logins. AI models cannot automate or optimize what they cannot read.</p>
+          <ul>
+            <li><strong>Structured:</strong> ADR, RevPAR curves, food & beverage POS check sizes, OTA net payout feeds.</li>
+            <li><strong>Unstructured:</strong> Operations manuals, brand standards, guest sentiment reviews, staff notes.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span>⚡</span> Punching Above Mid-Market Weight
+          </div>
+          <p>Stanford Hotels (13 properties, ~4,046 rooms) does not need a 20-person data engineering department to compete with global hotel chains.</p>
+          <ul>
+            <li><strong>In-House Agility:</strong> Build lightweight connectors and clean schemas using modern coding agents and Python.</li>
+            <li><strong>No Vendor Trap:</strong> Avoid paying $20K/mo retainers for bloated MarTech SaaS UIs; own the raw data layer directly.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span>🛡️</span> House Data Governance & Safety
+          </div>
+          <p>Enterprise data expansion must adhere to strict security and guest privacy guardrails.</p>
+          <ul>
+            <li><strong>Data Sovereignty:</strong> Stanford owns 100% of raw guest event logs and schemas—never held hostage by agencies.</li>
+            <li><strong>PII Masking:</strong> Automatic redaction of guest phone numbers and payment data prior to LLM analysis.</li>
+            <li><strong>Deterministic Gates:</strong> AI drafts campaigns and audits; humans approve executions.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: GEO METADATA & SCHEMA AUDIT -->
+    <div class="slide" id="slide-1">
+      <div class="slide-header">
+        <div>
+          <div class="slide-num">Strategic Pillar 2 · Discovery & Acquisition</div>
+          <h1 class="slide-title">Granular GEO Metadata & Entity Tagging</h1>
+          <p class="slide-subtitle">Capturing multi-constraint conversational AI search where rigid brand.com portals fail</p>
+        </div>
+        <span class="gold-pill">Live Market Audit</span>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card" style="margin-bottom: 18px;">
+            <div class="card-header">
+              <span>🔍</span> Live Audit: LUMA Hotel SF vs. Competitor Hotel VIA
+            </div>
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th>Audit Checkpoint</th>
+                  <th>LUMA Hotel SF</th>
+                  <th>Hotel VIA (Competitor)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Hotel JSON-LD</strong></td>
+                  <td><span class="danger-pill">MISSING (0 blocks)</span></td>
+                  <td><span class="danger-pill">MISSING (0 blocks)</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Proximity Schema</strong></td>
+                  <td><span class="danger-pill">NONE (Chase/Oracle)</span></td>
+                  <td><span class="danger-pill">NONE</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Geo Meta (ICBM)</strong></td>
+                  <td><span class="danger-pill">MISSING (2005 meta)</span></td>
+                  <td><span class="danger-pill">MISSING</span></td>
+                </tr>
+                <tr>
+                  <td><strong>F&B Sub-Entities</strong></td>
+                  <td><span class="danger-pill">Unlinked (Cavaña)</span></td>
+                  <td><span class="danger-pill">Unlinked</span></td>
+                </tr>
+                <tr>
+                  <td><strong>GTM Container</strong></td>
+                  <td><span class="success-pill">PRESENT (Active)</span></td>
+                  <td><span class="success-pill">PRESENT</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span>🚀</span> The Immediate Leapfrog Advantage
+            </div>
+            <p style="font-size: 13px;">
+              Because Hotel VIA and other boutique rivals share the exact same blind spot, AI engines (Google AI Overviews, ChatGPT Search, Perplexity) default to third-party OTA listicles. By deploying granular JSON-LD spatial schemas, LUMA can immediately dominate conversational proximity search.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <span>💻</span> Proposed JSON-LD Spatial Entity Architecture
+            </div>
+            <pre><code>{
+  <span class="json-key">"@context"</span>: <span class="json-str">"https://schema.org"</span>,
+  <span class="json-key">"@type"</span>: <span class="json-str">"Hotel"</span>,
+  <span class="json-key">"name"</span>: <span class="json-str">"LUMA Hotel San Francisco"</span>,
+  <span class="json-key">"geo"</span>: {
+    <span class="json-key">"@type"</span>: <span class="json-str">"GeoCoordinates"</span>,
+    <span class="json-key">"latitude"</span>: <span class="json-num">37.7767</span>,
+    <span class="json-key">"longitude"</span>: <span class="json-num">-122.3932</span>
+  },
+  <span class="json-key">"touristAttraction"</span>: [
+    {
+      <span class="json-key">"@type"</span>: <span class="json-str">"SportsActivityLocation"</span>,
+      <span class="json-key">"name"</span>: <span class="json-str">"Oracle Park"</span>,
+      <span class="json-key">"sameAs"</span>: <span class="json-str">"https://www.wikidata.org/wiki/Q1474938"</span>,
+      <span class="json-key">"distance"</span>: <span class="json-str">"0.3 miles (6-min walk)"</span>
+    },
+    {
+      <span class="json-key">"@type"</span>: <span class="json-str">"SportsActivityLocation"</span>,
+      <span class="json-key">"name"</span>: <span class="json-str">"Chase Center"</span>,
+      <span class="json-key">"sameAs"</span>: <span class="json-str">"https://www.wikidata.org/wiki/Q15093556"</span>,
+      <span class="json-key">"distance"</span>: <span class="json-str">"0.6 miles (Muni T-Third)"</span>
+    }
+  ],
+  <span class="json-key">"containsPlace"</span>: [
+    {
+      <span class="json-key">"@type"</span>: <span class="json-str">"BarOrPub"</span>,
+      <span class="json-key">"name"</span>: <span class="json-str">"Cavaña Rooftop Lounge"</span>,
+      <span class="json-key">"servesCuisine"</span>: <span class="json-str">"Latin American"</span>
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: OTA STRATEGY & REVENUE MANAGEMENT -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div>
+          <div class="slide-num">Strategic Pillar 3 · Margin Defense</div>
+          <h1 class="slide-title">OTA Interception & Revenue Management</h1>
+          <p class="slide-subtitle">Driving Shane's ~7% direct booking target against 15%–25% OTA commission leakage</p>
+        </div>
+        <span class="success-pill">Direct Margin Optimization</span>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 24px;">
+        <div class="card">
+          <div class="card-header">
+            <span>⚖️</span> Legally Bypassing Rate Parity
+          </div>
+          <p>OTAs contractually ban cheaper public rates on vanity sites. Beat them through fenced channels:</p>
+          <ul>
+            <li><strong>Closed User Group:</strong> 1-click email/social gating makes discounts private member rates (100% exempt from parity).</li>
+            <li><strong>"Shadow Discounts":</strong> Bundle high-perceived-value / low-marginal-cost perks ($65 free valet parking, $25 Cavaña credit, 1:00 PM late checkout).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span>📱</span> Eliminating Booking Friction
+          </div>
+          <p>50%+ of travelers bounce back to Expedia because their credit card is already saved.</p>
+          <ul>
+            <li><strong>1-Click Apple / Google Pay:</strong> Native mobile tokens eliminate typing 16 credit card digits into clunky iframes.</li>
+            <li><strong>15-Min Abandonment Magic Links:</strong> Automated SMS/email re-opens their exact dates and room with perks pre-applied.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span>🔄</span> Post-Stay Retention
+          </div>
+          <p>Acquiring a guest on Expedia once is CAC. Paying Expedia twice for the same guest is operational failure.</p>
+          <ul>
+            <li><strong>Real Email Capture:</strong> Front desk + Wi-Fi captive portals bypass Expedia's proxy email address.</li>
+            <li><strong>VIP Direct Re-engagement:</strong> Revinate delivers exclusive lifetime direct re-booking codes (<code>LUMADIRECT</code>).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg, #0d172e, #09101f); border-color: #2b3d63;">
+        <div class="card-header" style="justify-content: space-between;">
+          <span>💰 The Direct Booking EBITDA Math (Per 2-Night Stay @ $280 ADR)</span>
+          <span class="highlight-pill">Portfolio Scale: 4,046 Rooms</span>
+        </div>
+        <div class="grid-2" style="margin-top: 12px; align-items: center;">
+          <div style="background: #090d16; padding: 16px; border-radius: 8px; border-left: 4px solid var(--danger);">
+            <div style="font-size: 13px; color: var(--danger); font-weight: 700;">OTA Booking (Expedia / Booking.com)</div>
+            <div style="font-size: 20px; font-weight: 700; color: #fff; margin: 4px 0;">$560 Gross Revenue</div>
+            <div style="font-size: 13px; color: var(--text-muted);">- $112 OTA Commission (20% toll)</div>
+            <div style="font-size: 14px; font-weight: 600; color: #cbd5e1; margin-top: 6px;">Net Stanford Cash: <span style="color: #fff;">$448</span></div>
+          </div>
+
+          <div style="background: #090d16; padding: 16px; border-radius: 8px; border-left: 4px solid var(--accent);">
+            <div style="font-size: 13px; color: var(--accent); font-weight: 700;">Direct Vanity Booking (Shane's 7% Target)</div>
+            <div style="font-size: 20px; font-weight: 700; color: #fff; margin: 4px 0;">$560 Gross Revenue</div>
+            <div style="font-size: 13px; color: var(--text-muted);">- $56 Member Rate (10%) + Free Valet ($0 marginal cost)</div>
+            <div style="font-size: 14px; font-weight: 600; color: #cbd5e1; margin-top: 6px;">Net Stanford Cash: <span style="color: var(--accent); font-size: 16px;">$504 (+$56 Net Cash Gain)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Stanford Hotels Corporation · AI Marketing Optimization Specialist · Candidate: David Kellam · September 2026
+  </footer>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      dots.forEach((d, idx) => {
+        d.classList.toggle('active', idx === currentSlide);
+      });
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function changeSlide(direction) {
+      currentSlide = Math.max(0, Math.min(slides.length - 1, currentSlide + direction));
+      updateSlide();
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlide();
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>
