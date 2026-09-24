@@ -374,6 +374,8 @@
         <div class="dot active" onclick="goToSlide(0)"></div>
         <div class="dot" onclick="goToSlide(1)"></div>
         <div class="dot" onclick="goToSlide(2)"></div>
+        <div class="dot" onclick="goToSlide(3)"></div>
+        <div class="dot" onclick="goToSlide(4)"></div>
       </div>
       <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
     </div>
@@ -616,7 +618,161 @@
         </div>
       </div>
     </div>
+
+    <!-- SLIDE 4: THE 4-PLANE HOSPITALITY TECH STACK -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-num">Strategic Pillar 4 · Systems Architecture</div>
+          <h1 class="slide-title">The 4-Plane Hospitality Tech Stack & Integration Seams</h1>
+          <p class="slide-subtitle">Negotiating the boundaries between Brand Portals, Property Operations, Corporate HQ, and Distribution</p>
+        </div>
+        <span class="highlight-pill">Enterprise Systems Map</span>
+      </div>
+
+      <!-- VISUAL 4-PLANE ARCHITECTURE -->
+      <div class="arch-diagram">
+        <div class="arch-col" style="border-color: #64748b;">
+          <div class="arch-col-title" style="color: #94a3b8;">Plane 1: Brand Flags</div>
+          <div class="arch-box"><span>🏢</span> Marriott CI/TY / Marsha</div>
+          <div class="arch-box"><span>🏨</span> Hilton OnQ CRS</div>
+          <div class="arch-box"><span>👑</span> Bonvoy / Honors Loyalty</div>
+          <div class="arch-box" style="border-color: var(--danger);"><span style="color: var(--danger);">⚠</span> Opaque Data Void</div>
+        </div>
+
+        <div class="arch-connector">➔</div>
+
+        <div class="arch-col" style="border-color: var(--gold);">
+          <div class="arch-col-title" style="color: var(--gold);">Plane 2: Property Ops</div>
+          <div class="arch-box"><span>💾</span> PMS: OPERA Cloud / OnQ</div>
+          <div class="arch-box"><span>🍽️</span> POS: Micros Simphony</div>
+          <div class="arch-box"><span>📶</span> Wi-Fi: ElevenOS Portal</div>
+          <div class="arch-box"><span>🌙</span> Night Audit Ledger</div>
+        </div>
+
+        <div class="arch-connector">➔</div>
+
+        <div class="arch-col" style="border-color: var(--primary);">
+          <div class="arch-col-title" style="color: var(--primary-hover);">Plane 3: Stanford HQ (You)</div>
+          <div class="arch-box"><span>🌐</span> Vanity CRS: SynXis / iHotelier</div>
+          <div class="arch-box"><span>📈</span> GA4 + GTM + Hotel Center</div>
+          <div class="arch-box"><span>✉️</span> Revinate / Cendyn CRM</div>
+          <div class="arch-box"><span>💼</span> Delphi.fdc Group Sales</div>
+          <div class="arch-box"><span>🔒</span> M365 / Entra ID SSO</div>
+        </div>
+
+        <div class="arch-connector">➔</div>
+
+        <div class="arch-col" style="border-color: var(--danger);">
+          <div class="arch-col-title" style="color: var(--danger);">Plane 4: Distribution</div>
+          <div class="arch-box"><span>✈️</span> Expedia / Booking.com</div>
+          <div class="arch-box"><span>🔍</span> Google Hotel Ads / Meta</div>
+          <div class="arch-box"><span>🗄️</span> GDS (Sabre / Amadeus)</div>
+          <div class="arch-box" style="border-color: var(--danger);"><span style="color: var(--danger);">💸</span> 15–25% Commission Toll</div>
+        </div>
+      </div>
+
+      <!-- SEAMS & POSTURE CARDS -->
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header"><span>🔌</span> Integration Seams (OXI & HTNG)</div>
+          <p>Treat PMS/CRS as strict systems of record. Communicate via standardized OXI gateways or HTNG webhooks without touching database internals or risking schema lockups.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span>📶</span> Margin Reclamation Bridge</div>
+          <p>OTAs mask guest emails. Connecting ElevenOS Wi-Fi captive portal auth to Revinate CRM reclaims direct guest identities the instant they authenticate on property.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span>🛡️</span> Zero-Shadow-IT Governance</div>
+          <p>Every marketing tool and tag follows formalized IT change management: isolated staging, least-privilege Entra ID SSO, and zero guest PII passed to external AI models.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: CUSTOMER JOURNEY & SIGNAL TELEMETRY -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div>
+          <div class="slide-num">Strategic Pillar 5 · Signal Telemetry</div>
+          <h1 class="slide-title">End-to-End Guest Lifecycle & Signal Telemetry Map</h1>
+          <p class="slide-subtitle">Tracking where signals live, leak, and convert from initial search intent to Night Audit reconciliation</p>
+        </div>
+        <span class="gold-pill">Full Telemetry Flow</span>
+      </div>
+
+      <!-- JOURNEY PIPELINE -->
+      <div class="arch-diagram">
+        <div class="arch-col">
+          <div class="arch-col-title">1. Search & Intent</div>
+          <div class="arch-box"><span>🔍</span> Google AI / GEO Query</div>
+          <div class="arch-box"><span>📊</span> GSC & Impression Feeds</div>
+          <div class="arch-box"><span>🏨</span> Hotel Center Free Links</div>
+          <div class="arch-box"><span>🎯</span> Audience & UTM Tags</div>
+        </div>
+
+        <div class="arch-connector">➔</div>
+
+        <div class="arch-col" style="border-color: var(--primary);">
+          <div class="arch-col-title" style="color: var(--primary-hover);">2. The Booking Fork</div>
+          <div class="arch-box" style="border-left: 3px solid var(--accent);"><span>⭐</span> Direct Vanity (SynXis/GA4)</div>
+          <div class="arch-box" style="border-left: 3px solid #64748b;"><span>🏢</span> Brand.com (Marsha/CI/TY)</div>
+          <div class="arch-box" style="border-left: 3px solid var(--danger);"><span>💸</span> OTA (Masked Email)</div>
+          <div class="arch-box"><span>🔒</span> Tokenized Card Gateway</div>
+        </div>
+
+        <div class="arch-connector">➔</div>
+
+        <div class="arch-col" style="border-color: var(--accent);">
+          <div class="arch-col-title" style="color: var(--accent);">3. Pre-Arrival Upsell</div>
+          <div class="arch-box"><span>✉️</span> Automated Revinate Sync</div>
+          <div class="arch-box"><span>🛎️</span> Room Upgrade Inquiries</div>
+          <div class="arch-box"><span>🚗</span> Parking & Early Check-in</div>
+          <div class="arch-box"><span>💰</span> High-Margin Ancillary $</div>
+        </div>
+
+        <div class="arch-connector">➔</div>
+
+        <div class="arch-col" style="border-color: var(--gold);">
+          <div class="arch-col-title" style="color: var(--gold);">4. On-Property Stay</div>
+          <div class="arch-box"><span>🛎️</span> OPERA Check-in: "IN HOUSE"</div>
+          <div class="arch-box" style="border-color: var(--accent);"><span>📶</span> Wi-Fi Auth Captures Email</div>
+          <div class="arch-box"><span>🍽️</span> Micros POS ➔ Folio Post</div>
+          <div class="arch-box"><span>💬</span> In-Stay Guest Requests</div>
+        </div>
+
+        <div class="arch-connector">➔</div>
+
+        <div class="arch-col">
+          <div class="arch-col-title">5. Audit & Retention</div>
+          <div class="arch-box"><span>🌙</span> Night Audit Closes Folio</div>
+          <div class="arch-box"><span>⚖️</span> GA4 ↔ PMS Reconciliation</div>
+          <div class="arch-box"><span>⭐</span> Post-Stay NPS & Reviews</div>
+          <div class="arch-box"><span>🔄</span> Direct Winback Sequence</div>
+        </div>
+      </div>
+
+      <!-- TELEMETRY INSIGHT CARDS -->
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header"><span>⚖️</span> The Daily Reconciliation Loop</div>
+          <p>GA4 web conversions and PMS room nights operate on different clocks and domains. A daily reconciliation job ensures marketing reports audited ADR and RevPAR, not phantom clicks.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span>🍽️</span> POS to Folio Integrity</div>
+          <p>F&B and banquet charges via Micros Simphony sync to OPERA folios via FIAS/HTNG before night audit locks. We mirror this exact auditability standard in marketing attribution.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span>🔄</span> Closing the Direct-Book Loop</div>
+          <p>By capturing real guest emails at the Wi-Fi portal and syncing stay history into Revinate, we run automated, personalized re-engagement campaigns that bypass OTAs on repeat visits.</p>
+        </div>
+      </div>
+    </div>
   </main>
+
 
   <footer>
     Stanford Hotels Corporation · AI Marketing Optimization Specialist · Candidate: David Kellam · September 2026
