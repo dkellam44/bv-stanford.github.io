@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stanford Hotels — Integration Seams & Customer Journey Architecture</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#090d16',
+        primaryColor: '#1e3a8a',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#60a5fa',
+        secondaryColor: '#064e3b',
+        tertiaryColor: '#111827'
+      }
+    });
+  </script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --border: #1f293d;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+      --green: #10b981;
+      --gold: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 30px 20px;
+      line-height: 1.6;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    h1 { font-size: 24px; color: #fff; font-weight: 700; }
+    p.subtitle { color: var(--muted); font-size: 14px; margin-top: 4px; }
+    .badge {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--accent);
+      color: #93c5fd;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .btn {
+      background: #1e293b;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--accent); }
+    .diagram-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 35px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .diagram-header {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .diagram-title { font-size: 20px; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .diagram-desc { font-size: 14px; color: var(--muted); margin-top: 6px; }
+    .mermaid-box {
+      background: #030712;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      text-align: center;
+    }
+    .grid-callouts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .callout {
+      background: #0b111e;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .callout-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .callout p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    footer {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Stanford Hotels — Systems & Telemetry Architecture</h1>
+        <p class="subtitle">Visual Reference for Carlos Sanchez (IT Director) & Shane Keener (VP Marketing)</p>
+        <div class="nav-links">
+          <a href="index.html" class="btn">← Back to Slide Deck</a>
+          <button onclick="window.print()" class="btn">🖨️ Print / Save PDF</button>
+        </div>
+      </div>
+      <div class="badge">Live Candidate Reference · David Kellam</div>
+    </header>
+
+    <div class="diagram-card">
+      <div class="diagram-header">
+        <h2 class="diagram-title"><span>🏛️</span> 1. The 4-Plane Hospitality Tech Stack & Integration Seams</h2>
+        <p class="diagram-desc">Data custody, API protocols (OXI, HTNG, FIAS), and boundaries across Franchisors, Property Ops, Stanford Corporate, and OTAs.</p>
+      </div>
+
+      <div class="mermaid-box">
+        <pre class="mermaid">
+flowchart TD
+    subgraph P1[PLANE 1: BRAND PLANE]
+        BrandWeb[brand.com and Apps]
+        BrandCRS[Brand CRS: Marriott CITY / Hilton OnQ]
+        BrandLoyalty[Loyalty: Bonvoy / Honors]
+        BrandCRS --- BrandWeb
+    end
+
+    subgraph P4[PLANE 4: DISTRIBUTION AND OTAS]
+        OTAs[OTAs: Expedia / Booking.com]
+        Meta[Metasearch: Google Hotels / Kayak]
+        GDS[GDS: Sabre / Amadeus Corp Travel]
+    end
+
+    subgraph P3[PLANE 3: OWNER AND HQ PLANE - Stanford Corporate]
+        VanityWeb[Vanity Websites LUMA etc]
+        VanityCRS[Vanity CRS / BE: Sabre SynXis / iHotelier]
+        Analytics[Measurement: GA4 + GTM + Hotel Center]
+        CRM[Hospitality CRM: Revinate / Cendyn]
+        SalesCRM[Group Sales: Amadeus Delphi.fdc RFPs]
+        CorpIT[Corporate IT: M365 + Entra ID + Power BI]
+        VanityWeb -->|GTM Events| Analytics
+        VanityWeb -->|Direct Booking| VanityCRS
+    end
+
+    subgraph P2[PLANE 2: PROPERTY PLANE - Local Operations]
+        PMS[PMS System of Record: Oracle OPERA Cloud / OnQ]
+        POS[POS Outlets: Oracle Micros Simphony]
+        WiFi[Guest WiFi Captive Portal: ElevenOS]
+        NightAudit[Night Audit Ledger Reconciliation]
+    end
+
+    BrandCRS ==>|OXI Interface Gate| PMS
+    OTAs ==>|Channel Manager 15-25pct Toll| VanityCRS
+    VanityCRS ==>|Booking Injection HTNG API| PMS
+    POS <==|Room Charge Posting FIAS/HTNG| PMS
+    WiFi -.->|Direct Email Capture Bypasses Mask| CRM
+    PMS ==>|Nightly Folio and Stay Exports| CRM
+    PMS ==>|Nightly Revenue and Room Nights| NightAudit
+    Analytics -.->|Unreconciled Web Conversions| NightAudit
+        </pre>
+      </div>
+
+      <div class="grid-callouts">
+        <div class="callout">
+          <div class="callout-title"><span>🔌</span> OPERA & Brand OXI Gateway</div>
+          <p>Treats PMS/CRS as authoritative systems of record. Communicates via audited OXI gateways or HTNG webhooks, ensuring zero direct DB lockups.</p>
+        </div>
+        <div class=callout>
+          <div class="callout-title"><span>📶</span> Wi-Fi Margin Bridge</div>
+          <p>ElevenOS captive portal auth captures verified guest identity from OTA bookings, injecting real emails into Revinate for future direct marketing.</p>
+        </div>
+        <div class="callout">
+          <div class="callout-title"><span>🛡️</span> Zero-Shadow-IT Compliance</div>
+          <p>All marketing tags and pipelines federate via Entra ID SSO with strict PII masking before touching any analytics or AI systems.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-header">
+        <h2 class="diagram-title"><span>🗺️</span> 2. End-to-End Customer Journey & Telemetry Touchpoint Map</h2>
+        <p class="diagram-desc">Sequential trace of signals captured across search intent, the 3-way booking fork, pre-arrival CRM upsells, on-property stay, and night audit ledger lock.</p>
+      </div>
+
+      <div class="mermaid-box">
+        <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Guest
+    participant Web as Discovery & Search (Google / GEO / OTA)
+    participant Booking as Booking Engine (SynXis / iHotelier)
+    participant PMS as Property PMS (OPERA / OnQ)
+    participant POS as F&B POS (Micros Simphony)
+    participant WiFi as Wi-Fi Portal (ElevenOS)
+    participant CRM as CRM (Revinate)
+
+    rect rgb(15, 23, 42)
+    Note over Guest,Web: STAGE 1: SEARCH & DISCOVERY
+    Guest->>Web: Searches luxury hotel SOMA SF (Google / AI Engine)
+    Web-->>Guest: Displays Vanity Site + Google Hotel Center rates
+    end
+
+    rect rgb(30, 27, 75)
+    Note over Guest,Booking: STAGE 2: SHOPPING & BOOKING
+    alt Direct Vanity Booking (High Margin)
+        Guest->>Booking: Selects room & enters payment
+        Booking->>Booking: GTM fires purchase event to GA4
+        Booking->>PMS: Tokens & reservation injected into PMS
+    else OTA Booking (Expedia - Margin Loss)
+        Guest->>Web: Books on Expedia (15-25pct commission)
+        Web->>PMS: Pushes reservation with MASKED email
+    end
+    end
+
+    rect rgb(6, 78, 59)
+    Note over PMS,CRM: STAGE 3: PRE-ARRIVAL UPSELLS
+    PMS->>CRM: Pushes reservation roster (3-5 days prior)
+    CRM->>Guest: Automated email: Room upgrade, parking, check-in
+    end
+
+    rect rgb(67, 20, 7)
+    Note over Guest,POS: STAGE 4: ON-PROPERTY CONSUMPTION
+    Guest->>PMS: Front Desk Check-in (Status: IN HOUSE)
+    Guest->>WiFi: Connects to Guest Wi-Fi Captive Portal
+    WiFi->>CRM: CAPTURES REAL GUEST EMAIL (Reclaims OTA identity)
+    Guest->>POS: Orders dinner/drinks at hotel restaurant
+    POS->>PMS: Is Room 402 valid? -> Posts charge to folio
+    end
+
+    rect rgb(19, 78, 74)
+    Note over PMS,CRM: STAGE 5: NIGHT AUDIT & RETENTION
+    PMS->>PMS: Night Audit closes folios (Calculates ADR / RevPAR)
+    PMS->>CRM: Guest status: CHECKED OUT
+    CRM->>Guest: Automated post-stay NPS survey & direct re-booking offer
+    end
+        </pre>
+      </div>
+
+      <div class="grid-callouts">
+        <div class="callout">
+          <div class="callout-title"><span>⚖️</span> Daily Reconciliation Engine</div>
+          <p>Reconciling GA4 cross-domain checkout events against PMS room nights nightly prevents attributing phantom revenue to ad spend.</p>
+        </div>
+        <div class=callout>
+          <div class="callout-title"><span>🍽️</span> POS to Folio Posting</div>
+          <p>Simphony POS queries OPERA via FIAS/HTNG to validate room status before posting dining charges to the guest ledger.</p>
+        </div>
+        <div class="callout">
+          <div class="callout-title"><span>🔄</span> Direct Re-engagement</div>
+          <p>Captured Wi-Fi profiles feed automated win-back campaigns in Revinate, driving repeat visits directly through vanity booking engines.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Stanford Hotels Corporation · AI Marketing Optimization Specialist · Candidate: David Kellam · September 2026
+    </footer>
+  </div>
+</body>
+</html>

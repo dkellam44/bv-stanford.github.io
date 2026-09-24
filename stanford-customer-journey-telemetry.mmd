@@ -1,0 +1,49 @@
+sequenceDiagram
+    autonumber
+    actor Guest
+    participant Web as Discovery & Search (Google / GEO / OTA)
+    participant Booking as Booking Engine (SynXis / iHotelier)
+    participant PMS as Property PMS (OPERA / OnQ)
+    participant POS as F&B POS (Micros Simphony)
+    participant WiFi as Wi-Fi Portal (ElevenOS)
+    participant CRM as CRM (Revinate)
+
+    rect rgb(15, 23, 42)
+    Note over Guest,Web: STAGE 1: SEARCH & DISCOVERY
+    Guest->>Web: Searches luxury hotel SOMA SF (Google / AI Engine)
+    Web-->>Guest: Displays Vanity Site + Google Hotel Center rates
+    end
+
+    rect rgb(30, 27, 75)
+    Note over Guest,Booking: STAGE 2: SHOPPING & BOOKING
+    alt Direct Vanity Booking (High Margin)
+        Guest->>Booking: Selects room & enters payment
+        Booking->>Booking: GTM fires purchase event to GA4
+        Booking->>PMS: Tokens & reservation injected into PMS
+    else OTA Booking (Expedia - Margin Loss)
+        Guest->>Web: Books on Expedia (15-25pct commission)
+        Web->>PMS: Pushes reservation with MASKED email
+    end
+    end
+
+    rect rgb(6, 78, 59)
+    Note over PMS,CRM: STAGE 3: PRE-ARRIVAL UPSELLS
+    PMS->>CRM: Pushes reservation roster (3-5 days prior)
+    CRM->>Guest: Automated email: Room upgrade, parking, check-in
+    end
+
+    rect rgb(67, 20, 7)
+    Note over Guest,POS: STAGE 4: ON-PROPERTY CONSUMPTION
+    Guest->>PMS: Front Desk Check-in (Status: IN HOUSE)
+    Guest->>WiFi: Connects to Guest Wi-Fi Captive Portal
+    WiFi->>CRM: CAPTURES REAL GUEST EMAIL (Reclaims OTA identity)
+    Guest->>POS: Orders dinner/drinks at hotel restaurant
+    POS->>PMS: Is Room 402 valid? -> Posts charge to folio
+    end
+
+    rect rgb(19, 78, 74)
+    Note over PMS,CRM: STAGE 5: NIGHT AUDIT & RETENTION
+    PMS->>PMS: Night Audit closes folios (Calculates ADR / RevPAR)
+    PMS->>CRM: Guest status: CHECKED OUT
+    CRM->>Guest: Automated post-stay NPS survey & direct re-booking offer
+    end
