@@ -179,44 +179,48 @@
       <div class="mermaid-box">
         <pre class="mermaid">
 flowchart TD
-    subgraph P1["PLANE 1: BRAND PLANE"]
-        BrandWeb["brand.com and Mobile Apps"]
-        BrandCRS["Brand CRS: Marriott CITY / Hilton OnQ"]
-        BrandLoyalty["Loyalty: Bonvoy / Honors"]
-        BrandCRS --- BrandWeb
+    subgraph UPSTREAM["UPSTREAM DEMAND AND CHANNELS"]
+        direction LR
+        subgraph P1["PLANE 1: BRAND PLANE (Franchisors)"]
+            BrandWeb["brand.com and Mobile Apps"]
+            BrandCRS["Brand CRS: Marriott CITY · Hilton OnQ"]
+            BrandLoyalty["Loyalty: Bonvoy · Honors"]
+            BrandCRS --- BrandWeb
+        end
+        subgraph P4["PLANE 4: DISTRIBUTION AND OTAS"]
+            OTAs["OTAs: Expedia · Booking.com"]
+            Meta["Metasearch: Google Hotels · Kayak"]
+            GDS["GDS: Sabre · Amadeus (Corp Travel)"]
+        end
     end
 
-    subgraph P4["PLANE 4: DISTRIBUTION AND OTAS"]
-        OTAs["OTAs: Expedia / Booking.com"]
-        Meta["Metasearch: Google Hotels / Kayak"]
-        GDS["GDS: Sabre / Amadeus Corp Travel"]
-    end
-
-    subgraph P3["PLANE 3: OWNER AND HQ PLANE (Stanford Corporate)"]
-        VanityWeb["Vanity Websites (LUMA, etc.)"]
-        VanityCRS["Vanity CRS / Booking Engine: Sabre SynXis / iHotelier"]
-        Analytics["Measurement: GA4 + GTM + Hotel Center"]
-        CRM["Hospitality CRM: Revinate / Cendyn"]
-        SalesCRM["Group Sales: Amadeus Delphi.fdc RFPs"]
-        CorpIT["Corporate IT: M365 + Entra ID + Power BI"]
-        VanityWeb -->|"GTM Events"| Analytics
-        VanityWeb -->|"Direct Booking"| VanityCRS
-    end
-
-    subgraph P2["PLANE 2: PROPERTY PLANE (Local Operations)"]
-        PMS["PMS System of Record: Oracle OPERA Cloud / OnQ"]
-        POS["POS Outlets: Oracle Micros Simphony"]
-        WiFi["Guest Wi-Fi Captive Portal: ElevenOS"]
-        NightAudit["Night Audit Ledger Reconciliation"]
+    subgraph DOWNSTREAM["STANFORD OPERATIONS AND CONVERSION"]
+        direction LR
+        subgraph P3["PLANE 3: OWNER AND HQ (Stanford Corporate)"]
+            VanityWeb["Vanity Websites (LUMA, etc.)"]
+            VanityCRS["Vanity CRS: Sabre SynXis · iHotelier"]
+            Analytics["Measurement: GA4 · GTM · Hotel Center"]
+            CRM["Hospitality CRM: Revinate · Cendyn"]
+            SalesCRM["Group Sales: Amadeus Delphi.fdc"]
+            CorpIT["Corporate IT: M365 · Entra ID · Power BI"]
+            VanityWeb -->|"GTM Events"| Analytics
+            VanityWeb -->|"Direct Booking"| VanityCRS
+        end
+        subgraph P2["PLANE 2: PROPERTY PLANE (Local Hotel Ops)"]
+            PMS["PMS (System of Record): OPERA Cloud · OnQ"]
+            POS["POS Outlets: Oracle Micros Simphony"]
+            WiFi["Guest Wi-Fi Captive Portal: ElevenOS"]
+            NightAudit["Night Audit Ledger Reconciliation"]
+            POS ==>|"Room Charge (FIAS/HTNG)"| PMS
+        end
     end
 
     BrandCRS ==>|"OXI Interface Gate"| PMS
     OTAs ==>|"Channel Manager (15-25% Toll)"| VanityCRS
     VanityCRS ==>|"Booking Injection (HTNG API)"| PMS
-    POS ==>|"Room Charge Posting (FIAS/HTNG)"| PMS
-    WiFi -.->|"Direct Email Capture (Bypasses Mask)"| CRM
+    WiFi -.->|"Direct Email Capture"| CRM
     PMS ==>|"Nightly Folio & Stay Exports"| CRM
-    PMS ==>|"Nightly Revenue & Room Nights"| NightAudit
+    PMS ==>|"Nightly Revenue & Rooms"| NightAudit
     Analytics -.->|"Unreconciled Web Conversions"| NightAudit
         </pre>
       </div>
