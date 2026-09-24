@@ -27,10 +27,10 @@
         rankSpacing: 60
       },
       sequence: {
-        useMaxWidth: false,
-        actorMargin: 60,
-        boxMargin: 15,
-        messageMargin: 40
+        useMaxWidth: true,
+        actorMargin: 30,
+        boxMargin: 10,
+        messageMargin: 25
       }
     });
   </script>
@@ -64,12 +64,15 @@
       text-align: center;
     }
     .mermaid svg {
-      min-width: 1150px !important;
+      max-width: 100% !important;
       height: auto !important;
-      margin: 0 auto;
     }
-    .mermaid {
-      font-size: 16px !important;
+    #diagram1 svg {
+      max-width: 1000px !important;
+    }
+    #diagram2 svg {
+      max-width: 780px !important;
+      margin: 0 auto;
     }
     header {
       border-bottom: 1px solid var(--border);
@@ -176,7 +179,7 @@
         <p class="diagram-desc">Data custody, API protocols (OXI, HTNG, FIAS), and boundaries across Franchisors, Property Ops, Stanford Corporate, and OTAs.</p>
       </div>
 
-      <div class="mermaid-box">
+      <div class="mermaid-box" id="diagram1">
         <pre class="mermaid">
 flowchart TD
     subgraph UPSTREAM["UPSTREAM DEMAND AND CHANNELS"]
@@ -247,7 +250,7 @@ flowchart TD
         <p class="diagram-desc">Sequential trace of signals captured across search intent, the 3-way booking fork, pre-arrival CRM upsells, on-property stay, and night audit ledger lock.</p>
       </div>
 
-      <div class="mermaid-box">
+      <div class="mermaid-box" id="diagram2">
         <pre class="mermaid">
 sequenceDiagram
     autonumber
